@@ -11,6 +11,10 @@
 #import "LXCornalView.h"
 
 @interface LXRegisterViewController ()
+{
+    UITextField *userNameTextField;
+    UITextField *passwordTextField;
+}
 
 @end
 
@@ -31,8 +35,9 @@
     
     
     
-    UITextField *userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, headerImageVew.maxY + 40, 280, 30.0f)];
+    userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, headerImageVew.maxY + 40, 280, 30.0f)];
     userNameTextField.textColor =[UIColor whiteColor];
+    userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
     [userNameTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请输入手机号" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
     
     [self.view addSubview:userNameTextField];
@@ -42,9 +47,10 @@
     [self.view addSubview:line];
     
     
-    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, line.maxY + 10.0f, 280, 30.0f)];
+    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, line.maxY + 10.0f, 280, 30.0f)];
     passwordTextField.textColor =[UIColor whiteColor];
-    [passwordTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请输入登录密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
+    passwordTextField.keyboardType = UIKeyboardTypeNumberPad;
+    [passwordTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请输入验证码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
     [self.view addSubview:passwordTextField];
     
     UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, passwordTextField.maxY + 5.0f, 280, 1.0f)];
@@ -91,7 +97,11 @@
 
 -(void)next
 {
+    [self.view endEditing:YES];
+    
     LXPWDSettingController *pwdSettingVC = [LXPWDSettingController new];
+    pwdSettingVC.phone = userNameTextField.text;
+    pwdSettingVC.checkCode = userNameTextField.text;
     [self.navigationController pushViewController:pwdSettingVC animated:YES];
 }
 

@@ -9,7 +9,12 @@
 #import "LXPWDSettingController.h"
 #import "LXCornalView.h"
 
+
 @interface LXPWDSettingController ()
+{
+    UITextField *pwdTextField;
+    UITextField *comfirmPasswordTextField;
+}
 
 @end
 
@@ -27,23 +32,23 @@
     [headerImageVew setImage:[UIImage imageNamed:@"img_login_headshot"]];
     [self.view addSubview:headerImageVew];
     
-    UITextField *userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, headerImageVew.maxY + 40, 280, 30.0f)];
-    userNameTextField.textColor =[UIColor whiteColor];
-    userNameTextField.secureTextEntry = YES;
-    [userNameTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请设置密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
-    [self.view addSubview:userNameTextField];
+    pwdTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, headerImageVew.maxY + 40, 280, 30.0f)];
+    pwdTextField.textColor =[UIColor whiteColor];
+    pwdTextField.secureTextEntry = YES;
+    [pwdTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请设置密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
+    [self.view addSubview:pwdTextField];
     
-    UIView *line = [[UIView alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, userNameTextField.maxY + 5.0f, 280, 1.0f)];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, pwdTextField.maxY + 5.0f, 280, 1.0f)];
     line.backgroundColor = kBorderMainColor;
     [self.view addSubview:line];
     
-    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, line.maxY + 10.0f, 280, 30.0f)];
-    passwordTextField.textColor =[UIColor whiteColor];
-    passwordTextField.secureTextEntry = YES;
-    [passwordTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请重复密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
-    [self.view addSubview:passwordTextField];
+    comfirmPasswordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, line.maxY + 10.0f, 280, 30.0f)];
+    comfirmPasswordTextField.textColor =[UIColor whiteColor];
+    comfirmPasswordTextField.secureTextEntry = YES;
+    [comfirmPasswordTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请重复密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
+    [self.view addSubview:comfirmPasswordTextField];
     
-    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, passwordTextField.maxY + 5.0f, 280, 1.0f)];
+    UIView *line2 = [[UIView alloc] initWithFrame:CGRectMake((self.view.width - 280)/2.0f, comfirmPasswordTextField.maxY + 5.0f, 280, 1.0f)];
     line2.backgroundColor = kBorderMainColor;
     [self.view addSubview:line2];
     
@@ -76,7 +81,15 @@
 
 -(void)finish
 {
+    NSDictionary *dict = @{@"phone":_phone,@"password":comfirmPasswordTextField.text,@"confirm_password":_checkCode,@"source":kUserSourceCode};
     
+    [[LXUserManager sharedInstance] registerUserWithInfo:dict success:^(NSString *result) {
+        
+        NSLog(@"%@",result);
+    } fail:^(NSString *result) {
+        
+        NSLog(@"result");
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

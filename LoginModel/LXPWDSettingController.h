@@ -10,4 +10,7 @@
 
 @interface LXPWDSettingController : LXUserBaseController
 
+@property(nonatomic,strong)NSString *phone;
+@property(nonatomic,strong)NSString *checkCode;
+
 @end

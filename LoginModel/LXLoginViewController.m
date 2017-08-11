@@ -11,6 +11,10 @@
 #import "LXUserInfoViewController.h"
 #import "LXCornalView.h"
 @interface LXLoginViewController ()
+{
+    UITextField *userNameTextField;
+    UITextField *passwordTextField;
+}
 
 @end
 
@@ -33,13 +37,9 @@
     [headerImageVew addGestureRecognizer:tap];
     [self.view addSubview:headerImageVew];
     
-    
-    
-    
-    
-    
-    UITextField *userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 250)/2.0f + 15.0f, headerImageVew.maxY + 40, 250, 30.0f)];
+    userNameTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 250)/2.0f + 15.0f, headerImageVew.maxY + 40, 250, 30.0f)];
     userNameTextField.textColor =[UIColor whiteColor];
+    userNameTextField.keyboardType = UIKeyboardTypeNumberPad;
     [userNameTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请输入手机号" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
     [self.view addSubview:userNameTextField];
     
@@ -53,8 +53,9 @@
     [self.view addSubview:line];
     
     
-    UITextField *passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 250)/2.0f + 15.0f, line.maxY + 10.0f, 250, 30.0f)];
+    passwordTextField = [[UITextField alloc] initWithFrame:CGRectMake((self.view.width - 250)/2.0f + 15.0f, line.maxY + 10.0f, 250, 30.0f)];
     passwordTextField.textColor =[UIColor whiteColor];
+    passwordTextField.keyboardType = UIKeyboardTypeNamePhonePad;
     [passwordTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"请输入登录密码" attributes:@{NSForegroundColorAttributeName:kBorderMainColor}]];
     [self.view addSubview:passwordTextField];
     
@@ -136,7 +137,16 @@
 
 -(void)login
 {
+    [self.view endEditing:YES];
     
+    NSDictionary *dict = @{@"phone":userNameTextField.text,@"password":passwordTextField.text,@"source":kUserSourceCode};
+    [[LXUserManager sharedInstance] signIn:dict success:^(NSString *result) {
+        
+        
+    } fail:^(NSString *result) {
+        
+        
+    }];
 }
 
 -(void)showInfo
